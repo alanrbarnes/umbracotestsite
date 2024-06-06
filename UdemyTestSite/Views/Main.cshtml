@@ -1,0 +1,55 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@* @addTagHelper ClientDependency.Core.Mvc; *@
+
+@{
+	Layout = null;
+
+  //pick up dynamic generated model, gives a handle to home page so that children of homepage can be seen
+  var homePage = Model.AncestorOrSelf<Home>(); 
+}
+<html>
+    <head>
+    <!-- Scripts, css etc -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <link rel="stylesheet" href="/css/CookieConsent.css"/>
+    <link rel="stylesheet" href="/css/RTE.css"/>
+    <link rel="stylesheet" href="/css/BlockGridCss.css"/>
+
+    @RenderSection("head", false)
+    </head>
+    <body>
+
+        <!-- Nav goes here -->
+        @await Html.PartialAsync("NavBar")
+        
+        @RenderBody()
+        
+        <!-- Footer -->
+         @await Html.PartialAsync("Footer")
+        
+        <!-- Cookie Consent -->
+        <div class="alert text-center cookiealert" role="alert">
+          <b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website. <a href="/privacy/" target="_blank">Learn more</a>
+          <button type="button" class="btn btn-primary btn-sm acceptcookies">
+            I agree
+          </button>
+        </div>
+
+
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js" ></script>
+        <!-- Validation libraries-->
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/mvc/5.2.0/jquery.validate.unobtrusive.min.js"></script>
+
+        <script src="/scripts/CookieConsent.js" ></script>
+    
+
+    </body>
+</html>

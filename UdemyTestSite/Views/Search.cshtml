@@ -1,0 +1,107 @@
+﻿@using Umbraco.Cms.Web.Common
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Search>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
+
+@inject IPublishedContentQuery _publishedContentQuery;
+
+
+@{
+    Layout = "Main.cshtml";
+    //var heroImage = Model.Value<ImageCropperValue>("heroImage")?.Src;
+    var heroImage = Model.Value<IPublishedContent>("heroImage")?.Url() ?? "";
+    var heroOverlayColor = Model.Value<string>("heroOverlayColour");
+
+    //Logic for searchbox
+    var searchQuery = this.Context.Request.Query["query"];
+    IEnumerable<PublishedSearchResult> searchResults;
+    var resultsCount = 0;
+
+    //Do we have a search?
+    if (!string.IsNullOrEmpty(searchQuery))
+    {
+        //Ask Umbraco to search for the term and give the results
+        searchResults = _publishedContentQuery.Search(searchQuery, string.Empty, "InternalIndex")
+            .Where(w => w.Content.IsDocumentType("newsArticle"));
+
+        resultsCount = searchResults != null && searchResults.Any() ? searchResults.Count() : 0;
+    }
+    else
+    {
+        searchResults = null;
+    }
+
+}
+
+@if (!string.IsNullOrEmpty(heroOverlayColor))
+{
+
+  <style>
+      .home-hero > .overlay {
+            background-color: #@heroOverlayColor;
+          opacity: 0.5;
+          }
+      
+  </style>
+  
+}
+
+<!-- Render the search box --> 
+<header class="jumbotron jumbotron-fluid home-hero" style="background-image: url('@heroImage')">
+    <div class="overlay"></div>
+    <div class="inner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <h1 class="display-4">Search</h1>
+                    <form action="@Model.Url(null, UrlMode.Absolute)" method="Get">
+                        <fieldset>
+                            <input type="text" class="search-box" placeholder="Search..." name="query" />
+                            <button class="search-button">Search</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+<section class="container">
+    <h1>Search</h1>
+    <!-- Search results to go here -->
+    @if (!string.IsNullOrEmpty(searchQuery))
+    {
+        <div class="container">
+            <div class="col">
+                @if ((resultsCount == 0) || (searchResults == null))
+                {
+                    <text>
+                        No results were found for @searchQuery
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        We found @resultsCount result(s).
+                    </text>
+                    <ul>
+                        @foreach (var result in searchResults)
+                        {
+                            <li>
+                                <h2>
+                                    <a href="@result.Content.Url()">@result.Content.Name</a>
+                                </h2>
+                                <p>@result.Content</p>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    }
+</section>
+
+

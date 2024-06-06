@@ -1,0 +1,66 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<UdemyTestSite.ViewModels.LoginViewModel>
+@using UdemyTestSite.Controllers
+@using Umbraco.Cms.Core.Security;
+@inject Umbraco.Cms.Core.Services.IMemberService memberService
+@inject IMemberManager _memberManager;
+@model UdemyTestSite.ViewModels.LoginViewModel
+
+@{
+    var isMemberLoggedIn = _memberManager.IsLoggedIn();
+    var myUser = await _memberManager.GetCurrentMemberAsync();
+}
+
+<!-- Are we allready logged in? -->
+@if (isMemberLoggedIn)
+{
+    <!-- If Yes - Show Logout  -->
+    if(myUser != null)
+    {
+        <p><strong>Logged in as</strong>@myUser.UserName</p>
+        <a href="/logout" class="btn btn-danger">Log out</a><i class="fa fa-arrow-right"></i>
+    }
+}
+else
+{
+    <!-- If Not - Show Login form -->
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                @using (Html.BeginUmbracoForm<LoginController>(nameof(LoginController.HandleLogin)))
+                //@using (Html.BeginForm("HandleLogin", "Login", FormMethod.Post))
+                {
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- User Name -->
+                    <div class="form-group mt-4 mb-2">
+                        <label asp-for="Username" class="mb-1" style="font-size:.95em;">Username *</label>
+                        <input asp-for="Username" class="form-control mb-1" id="LFInputUserName" aria-describedby="Username Login" placeholder="Enter Username" />
+                        <span class="field-validation-valid text-danger" asp-validation-for="Username"></span>
+                    </div>
+                    <!-- User Name -->
+                    <div class="form-group mb-2">
+                        <label asp-for="Password" class="mb-1" style="font-size:.95em;">Password *</label>
+                        <input asp-for="Password" class="form-control mb-1" id="LFInputPassword" aria-describedby="Password Login" placeholder="Enter Password" />
+                        <span class="field-validation-valid text-danger" asp-validation-for="Password"></span>
+                    </div>
+
+                    <!-- Submit the form -->
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary" type="submit" value="Login" name="register-button">Login</button>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+    </div>
+    <div class ="row">
+        <div class="col">
+            //todo: forgotten password link
+        </div>
+    </div>
+}
+
+
+

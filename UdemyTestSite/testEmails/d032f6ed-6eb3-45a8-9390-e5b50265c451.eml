@@ -1,0 +1,13 @@
+X-Sender: your_email@example.com
+X-Receiver: anthony@fake.org
+X-Receiver: tommy@fake.org
+MIME-Version: 1.0
+From: your_email@example.com
+To: anthony@fake.org, tommy@fake.org
+Date: 22 May 2024 16:46:40 -0500
+Subject: There has been a contact form submission
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+
+A new contact form has been submitted by Tester7 <br/>Email: test=
+er7@fake.com <br/>Subject: Test7 <br/>Comments: Test7 Comments

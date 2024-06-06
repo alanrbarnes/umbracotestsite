@@ -1,0 +1,31 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	Layout = "Main.cshtml";
+}
+
+<!-- Insert Hero Image -->
+@await Html.PartialAsync("Hero")
+
+<!-- Call to Action --> 
+@await Html.PartialAsync("Call To Action")
+<!-- Latest News Cards --> 
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @await Html.PartialAsync("Latest News")
+        </div>
+    </div>
+</div>
+
+<!-- Latest Tweets --> 
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @await Umbraco.RenderMacroAsync("GetLatestTweets", new {twitterHandle="DrBillWinston"})
+        </div>
+    </div>
+</div>
+
+

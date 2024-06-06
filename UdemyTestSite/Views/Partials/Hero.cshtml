@@ -1,0 +1,44 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models
+@{
+    var pickedImage = Model.Value<MediaWithCrops>("heroImage");
+}
+
+<style>
+    .home-hero {
+        background: no-repeat center center;
+        background-attachment: scroll;
+        position: relative;
+        background-size: cover;
+        color: white;
+    }
+    .home-hero > .overlay {
+        position: absolute;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        /*background-color: rgba(31, 3, 103, 0.80);*/
+        z-index:; 1;
+    }
+    .home-hero > .inner {
+        position: relative;
+        z-index: 2;
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="jumbotron jumbotron-fluid home-hero" style="background-image: url('@pickedImage.MediaUrl()')">
+    <div class="overlay"></div>
+    <div class="inner">
+        <div class="container" style="padding-top: 2em; padding-bottom: 2em;">
+            <h1 class="display-4">@Model.Value("heroTitle")</h1>
+            <p class="lead">@Model.Value("heroSubtitle")</p>
+            <!--<hr class="my-4">-->
+            <!--<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>-->
+            <!--<p class="lead">-->
+            <!--    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
+            <!--</p>-->
+        </div>
+    </div>
+</div>
