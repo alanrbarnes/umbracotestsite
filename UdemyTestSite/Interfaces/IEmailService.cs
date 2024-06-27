@@ -4,7 +4,9 @@ namespace UdemyTestSite.Interfaces
 {
     public interface IEmailService
     {
-        void SendContactNotificationToAdmin(ContactFormViewModel vm);
-        void SendVerifyEmailAddressNotification(string membersEmail, string verificationToken);
+        bool SendContactNotificationToAdmin(ContactFormViewModel vm);
+        bool SendVerifyEmailAddressNotification(string membersEmail, string verificationToken);
+        bool SendResetPasswordNotification(string membersEmail, string resetToken);
+        bool SendPasswordChangedNotification(string membersEmail);
     }
 }

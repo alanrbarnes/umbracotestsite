@@ -7,7 +7,14 @@ using Umbraco.Cms.Core.Services;
 using Microsoft.Extensions.Configuration;
 using UdemyTestSite.Helpers; // Add this namespace
 
+using Umbraco.Cms.Web.Common.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Umbraco.Extensions;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+//builder.Services.AddRazorPages();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews()
@@ -26,7 +33,17 @@ builder.Services.AddHttpContextAccessor();
 // Register EmailService
 builder.Services.AddSingleton<IEmailService, EmailService>();
 
+// Configure MembershipOptions using the appsettings.json section
+var membershipOptions = builder.Configuration.GetSection("Membership").Get<MembershipOptions>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = membershipOptions.PasswordRequiresDigit;
+    options.Password.RequireLowercase = membershipOptions.PasswordRequiresLowercase;
+    options.Password.RequireUppercase = membershipOptions.PasswordRequiresUppercase;
+    options.Password.RequireNonAlphanumeric = membershipOptions.PasswordRequiresNonAlphanumeric;
+    options.Password.RequiredLength = membershipOptions.MinimumPasswordLength;
+});
 
 // Configure Umbraco services
 builder.CreateUmbracoBuilder()
@@ -46,7 +63,7 @@ WebApplication app = builder.Build();
 //app.UseStaticFiles();
 
 // Configure middleware
-app.UseWhen(context => !context.Request.Path.StartsWithSegments("/media"), appBuilder => appBuilder.UseStaticFiles());
+//app.UseWhen(context => !context.Request.Path.StartsWithSegments("/media"), appBuilder => appBuilder.UseStaticFiles());
 
 //app.UseRouting();
 
@@ -71,7 +88,7 @@ app.UseUmbraco()
 // Configure additional endpoints
 app.MapControllerRoute(
     name: "verify",
-    pattern: "verify-email/{token}",
+    pattern: "verify-email",
     defaults: new { controller = "Register", action = "RenderEmailVerification" });
 /*app.MapControllerRoute(
     name: "login",

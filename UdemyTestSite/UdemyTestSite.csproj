@@ -8,13 +8,11 @@
     <None Include="wwwroot\images\pexels-charles-parker-5847452.jpg" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Umbraco.Cms" Version="13.1.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
     <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
+    <PackageReference Include="Umbraco.Cms" Version="13.3.0" />
     <PackageReference Include="Umbraco.Cms.Core" Version="13.3.0" />
     <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="72.1.0.3" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
   </ItemGroup>
@@ -22,6 +20,14 @@
   <ItemGroup>
     <Folder Include="umbraco\models\" />
     <Folder Include="Views\Shared\Components\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\media\**" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UdemyTestSite.Core\UdemyTestSite.Core.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -33,6 +39,10 @@
     <!-- Remove RazorCompileOnBuild and RazorCompileOnPublish when not using ModelsMode InMemoryAuto -->
     <RazorCompileOnBuild>false</RazorCompileOnBuild>
     <RazorCompileOnPublish>false</RazorCompileOnPublish>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <ExcludeFilesFromDeployment>appsettings.json;web.config</ExcludeFilesFromDeployment>
   </PropertyGroup>
 
 </Project>

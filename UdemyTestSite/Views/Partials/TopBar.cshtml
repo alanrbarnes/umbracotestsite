@@ -1,0 +1,83 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Security;
+@inject Umbraco.Cms.Core.Services.IMemberService memberService
+@inject IMemberManager _memberManager;
+
+@{
+    //001a31
+
+    var isMemberLoggedIn = _memberManager.IsLoggedIn();
+}
+
+
+<div id="top-bar" class="w-100" >
+<div class="row" style="background-color: #001a31;">
+    <div class="col-12 col-lg-11 col-xxl-9 mx-auto">
+    <div class="row" style="background-color: #001a31;">
+        <div class="col-12" style="padding: .5em 1em;">
+				
+		
+            <ul id="top-navigation" class="d-inline float-start m-0 top-nav">
+
+                <li class="top-nav-item d-inline">
+				    <a class="btn btn-outline-light" style="font-size: .9em;">Watch Live Broadcast</a>
+				</li>
+                <li class="top-nav-item d-inline">
+				    <!-- <a href="https://store.jbs.edu/" class="montserrat-16-bold nav-link-1">Store</a> -->
+				</li>
+                <!-- <li class="top-nav-item"> -->
+				    <!-- <a href="#" class="montserrat-16-bold nav-link-1">Jc events</a> -->
+				<!-- </li> -->
+                <!-- <li class="d-none d-md-inline top-nav-item"> -->
+				    <!-- <a href="/contact/" class="montserrat-16-bold nav-link-1">Contact us</a> -->
+				<!-- </li> -->
+                <!-- <li class="d-none d-md-inline top-nav-item"> -->
+				    <!-- <a href="#" class="montserrat-16-bold nav-link-1">Quick links</a> -->
+				<!-- </li> -->
+            </ul>
+            
+            <div class="float-end">
+                        
+                <div class="social-links me-2 d-inline">
+                    <a href="https://www.facebook.com/livingwd" class="me-1" target="_blank" aria-label="Facebook - open in a new tab" >
+                	    <i class="fa-brands fa-square-facebook" style="font-size: 1.5em;"></i>
+                	</a>
+                    <a href="https://twitter.com/intent/follow?source=followbutton&amp;variant=1.0&amp;screen_name=livingwd" class="me-1" target="_blank" aria-label="Twitter - open in a new tab">
+                	    <i class="fa-brands fa-square-x-twitter" style="font-size: 1.5em;"></i>
+                	</a>
+                    <a href="http://instagram.com/livingwd" class="me-1" target="_blank" aria-label="Instagram - open in a new tab">
+                	    <i class="fa-brands fa-square-instagram" style="font-size: 1.5em;"></i>
+                	</a>
+                	<a href="https://www.youtube.com/livingwd" class="me-1" target="_blank" aria-label="Instagram - open in a new tab">
+                	    <i class="fa-brands fa-square-youtube" style="font-size: 1.5em;"></i>
+                	</a>
+                </div>
+
+                <div class="dropdown" style="display: inline; margin-right:.5em;">
+                      <span class="dropdown-toggle show" type="button" data-bs-toggle="dropdown" aria-expanded="true" style="color: #fff;">Language
+                      <span class="caret"></span><span></span></span>
+                            <ul class="dropdown-menu" style="z-index: 60;color: #001a31;">
+                                <li style="padding-bottom: .25em; padding-left: .5em;"><a style="color: #001a31;"  href="https://www.livingwd.org" data-uw-rm-brl="PR" data-uw-original-href="https://www.livingwd.org/">English</a></li>
+                                <li style="padding-left: .5em;"><a style="color: #001a31;" href="https://es.livingwd.org/" data-uw-rm-brl="PR" data-uw-original-href="https://es.livingwd.org/">Espanol</a></li>
+                      </ul>
+                </div>
+
+
+
+                        <div id="lwcc-quicklinks" class="d-inline" style=" margin-right:.5em;">
+                            <a style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Quick Links</a>
+                </div>
+
+                        <div id="search-lwcc" class="d-inline" style=" margin-right:.5em;">
+                            <a href="/search"><i class="fas fa-search fa-1x"></i></a>
+                        </div>
+            </div>
+            
+			
+        </div>
+    </div>
+	    </div>
+</div>
+</div>
+
+

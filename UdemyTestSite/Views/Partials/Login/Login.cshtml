@@ -22,13 +22,36 @@
 }
 else
 {
-    <!-- If Not - Show Login form -->
+
+    <!-- Display specific model errors -->
+    @if (ViewData.ModelState.ContainsKey("Login") && ViewData.ModelState["Login"].Errors.Any())
+    {
+        <div class="alert alert-danger mt-2">
+            @foreach (var error in ViewData.ModelState["Login"].Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }           
+    <!-- Display specific model errors -->
+    @if (ViewData.ModelState.ContainsKey("Error") && ViewData.ModelState["Error"].Errors.Any())
+    {
+        <div class="alert alert-danger mt-2">
+            @foreach (var error in ViewData.ModelState["Error"].Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+
+    <!-- Login form goes here -->
     <div class="container">
         <div class="row">
             <div class="col">
                 @using (Html.BeginUmbracoForm<LoginController>(nameof(LoginController.HandleLogin)))
                 //@using (Html.BeginForm("HandleLogin", "Login", FormMethod.Post))
                 {
+                   
 
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -55,9 +78,9 @@ else
             </div>
         </div>
     </div>
-    <div class ="row">
+    <div class ="row mb-4">
         <div class="col">
-            //todo: forgotten password link
+            <a href="/forgotten-password/">Forgotten password?</a>
         </div>
     </div>
 }

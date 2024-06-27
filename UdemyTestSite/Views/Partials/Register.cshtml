@@ -20,6 +20,27 @@
 }
 else
 {
+    <!-- Display specific model errors -->
+    @if (ViewData.ModelState.ContainsKey("Email") && ViewData.ModelState["Email"].Errors.Any())
+    {
+        <div class="alert alert-danger mt-2">
+            @foreach (var error in ViewData.ModelState["Email"].Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+    <!-- Display specific model errors -->
+    @if (ViewData.ModelState.ContainsKey("Error") && ViewData.ModelState["Error"].Errors.Any())
+    {
+        <div class="alert alert-danger mt-2">
+            @foreach (var error in ViewData.ModelState["Error"].Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+
     <div class="container">
         <div class="row">
             <div class="col">

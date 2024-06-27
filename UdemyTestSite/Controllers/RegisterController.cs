@@ -12,6 +12,7 @@ using Umbraco.Cms.Web.Website.Controllers;
 //using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
 using Umbraco.Cms.Core.Security;
+using Umbraco.Cms.Core.Models;
 
 namespace UdemyTestSite.Controllers
 {
@@ -67,7 +68,7 @@ namespace UdemyTestSite.Controllers
             }
 
             //Check if there is already a member with that email address
-            var existingMember = _memberService.GetByEmail(vm.EmailAddress);
+            var existingMember =  _memberService.GetByEmail(vm.EmailAddress);
             if (existingMember != null)
             {
                 ModelState.AddModelError("Email", "A member with that email address already exists");
@@ -158,6 +159,7 @@ namespace UdemyTestSite.Controllers
 
         #region Verification
 
+        //[HttpGet("/verify{token}")]
         public IActionResult RenderEmailVerification(string token)
         {
             //get token (query string)
@@ -172,23 +174,33 @@ namespace UdemyTestSite.Controllers
                 {
                     //If they are already verified, show a message
                     ModelState.AddModelError("Verified", "This email address has already been verified");
-                    return CurrentUmbracoPage();
+                    return Redirect("/login");
+                    //return CurrentUmbracoPage();
                 }
 
                 //Otherwise, set them to verified
                 member.SetValue("emailVerified", true);
-                member.SetValue("emailVerifiedDate", DateTime.Now);
+                member.SetValue("emailVerifyDate", DateTime.Now);
                 _memberService.Save(member);
 
                 //Thank the user
                 TempData["status"] = "OK";
-                return CurrentUmbracoPage();
+
+                // Redirect to the login page
+                //var childPage = CurrentPage.FirstChild();
+                //return RedirectToUmbracoPage(childPage.Key);
+
+                return Redirect("/login");
+
+                //return CurrentUmbracoPage();
             }
 
             //Otherwise, show an error message
             ModelState.AddModelError("Error", "Invalid verification token");
             return PartialView(PARTIAL_VIEW_FOLDER + "EmailVerification.cshtml");
         }
+
+
 
         #endregion
 

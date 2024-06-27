@@ -7,6 +7,34 @@
     Layout = "Main.cshtml";
 }
 
+window.addEventListener('load', function() {
+  // Call the method in the controller
+  ControllerName.MethodName();
+});
+
+<!-- Display specific model errors -->
+@if (ViewData.ModelState.ContainsKey("Verify") && ViewData.ModelState["Verify"].Errors.Any())
+{
+    <div class="alert alert-danger mt-2">
+        @foreach (var error in ViewData.ModelState["Verify"].Errors)
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+<!-- Display specific model errors -->
+@if (ViewData.ModelState.ContainsKey("Error") && ViewData.ModelState["Error"].Errors.Any())
+{
+    <div class="alert alert-danger mt-2">
+        @foreach (var error in ViewData.ModelState["Error"].Errors)
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+
+<H1><a>Go To Login</a></H1>
 
 
 

@@ -1,0 +1,159 @@
+﻿/* Make the carousel smaller */
+#carouselExampleCaptions {
+    max-width: 100%; /* Adjust the width as needed */
+    margin: auto; /* Center the carousel */
+}
+
+/* Move the carousel controls down */
+.carousel-control-prev, .carousel-control-next {
+    bottom: -50px; /* Adjust the value as needed to move controls down */
+}
+
+/* Adjust the carousel indicators to align with the new control positions */
+.carousel-indicators {
+    bottom: -60px; /* Adjust based on the new control positions */
+}
+
+.carousel-container {
+    height: 450px; /* Example height */
+}
+
+.carousel-background {
+    height: calc(450px + 60px);
+}
+.carousel-image {
+    max-height: 500px; /* Adjust this value to your desired height */
+    overflow: hidden;
+}
+/* For mobile devices */
+@media (max-width: 600px) {
+    .carousel-container {
+        height: 225px; /* Adjusted for smaller screens */
+    }
+
+    .carousel-background {
+        height: calc(225px + 60px); /* Keep the additional height consistent */
+    }
+    .carousel-image {
+        max-height: 225px; /* Adjust this value to your desired height */
+    }
+}
+
+/* For tablets */
+@media (min-width: 601px) and (max-width: 900px) {
+    .carousel-container {
+        height: 250px; /* Slightly larger for tablets */
+    }
+
+    .carousel-background {
+        height: calc(250px + 60px);
+    }
+    .carousel-image {
+        max-height: 250px; /* Adjust this value to your desired height */
+    }
+}
+
+/* For small desktops/large tablets */
+@media (min-width: 901px) and (max-width: 1200px) {
+    .carousel-container {
+        height: 350px; /* Larger height for bigger screens */
+    }
+
+    .carousel-background {
+        height: calc(350px + 60px);
+    }
+    .carousel-image {
+        max-height: 350px; /* Adjust this value to your desired height */
+    }
+}
+
+/* Optional: For very large screens */
+@media (min-width: 1201px) {
+    .carousel-container {
+        height: 475px; /* Original height or adjusted as needed */
+    }
+
+    .carousel-background {
+        height: calc(475px + 60px);
+    }
+    .carousel-image {
+        max-height: 475px; /* Adjust this value to your desired height */
+    }
+}
+
+
+
+
+/* Add a darker gradient overlay above the carousel text */
+.caption-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+}
+
+/* Ensure the text is positioned above the gradient */
+.caption-background {
+    position: relative;
+    z-index: 2;
+}
+
+/* Ensure the carousel item is positioned relatively */
+.carousel-item {
+    position: relative;
+}
+
+/* Position the carousel-caption at the bottom of the carousel item */
+.carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10; /* Ensure it's above the caption background */
+}
+
+/* Style for the caption background */
+.caption-background {
+    position: absolute;
+    bottom: 0; /* Align with the bottom of the carousel item */
+    left: 0;
+    right: 0;
+    height: 50%; /* Adjust based on your needs */
+    background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%); /* Fades from transparent to semi-transparent black */
+    /*background: rgba(0, 0, 0, 0.5);*/ /* Example: semi-transparent black */
+    z-index: 4; /* Below the text but above the image */
+}
+/* Adjust contrast for carousel arrows to have black arrows on a white background */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    position: relative; /* Keep the positioning relative for the pseudo-element */
+    z-index: 5;
+    filter: invert(100%);
+    /* If the arrows are not black by default, you might need to adjust the SVG/icon directly or use an appropriate filter */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    z-index: 5; /* Ensure the controls are above the caption */
+}
+
+.carousel-control-prev-icon::before,
+.carousel-control-next-icon::before {
+    content: ''; /* Required for pseudo-elements */
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Center the background */
+    width: 150%; /* Slightly larger than the icon for the background */
+    height: 150%; /* Slightly larger than the icon for the background */
+    /*background-color: rgba(255, 255, 255, 0.8);*/
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+    /*background-color: #FFFFFF; */ /* Change to white for the background */
+    border-radius: 50%; /* Maintain the circular shape */
+    z-index: -2; /* Ensure it's behind the icon */
+    opacity: .5
+}

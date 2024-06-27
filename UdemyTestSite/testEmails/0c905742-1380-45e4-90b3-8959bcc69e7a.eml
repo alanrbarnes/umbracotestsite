@@ -1,0 +1,29 @@
+X-Sender: no-reply@fake.org
+X-Receiver: alanbarnes447@gmail.com
+X-Receiver: abarnes@livingwd.org
+MIME-Version: 1.0
+From: no-reply@fake.org
+To: alanbarnes447@gmail.com, abarnes@livingwd.org
+Date: 7 Jun 2024 11:25:48 -0500
+Subject: Reset your password(Test Mode) - bboop@fake.com
+Content-Type: multipart/alternative;
+ boundary=--boundary_0_fab1eee6-81a7-4d0a-b1f9-700835a4efe0
+
+
+----boundary_0_fab1eee6-81a7-4d0a-b1f9-700835a4efe0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+
+Hi, =0AYou have requested to reset your password=0A=0Ahttp://loca=
+lhost:8906/reset-password?token=3D2c2985d5-bd19-403b-8d0e-649381d=
+161d8
+----boundary_0_fab1eee6-81a7-4d0a-b1f9-700835a4efe0
+Content-Type: text/html
+Content-Transfer-Encoding: base64
+
+PHA+SGksJm5ic3A7PGJyPllvdSBoYXZlIHJlcXVlc3RlZCB0byByZXNldCB5b3VyIHBh
+c3N3b3JkPC9wPgo8cD48YSBocmVmPSJodHRwOi8vbG9jYWxob3N0Ojg5MDYvcmVzZXQt
+cGFzc3dvcmQ/dG9rZW49MmMyOTg1ZDUtYmQxOS00MDNiLThkMGUtNjQ5MzgxZDE2MWQ4
+Ij5DbGljayBoZXJlPC9hPjwvcD4=
+----boundary_0_fab1eee6-81a7-4d0a-b1f9-700835a4efe0--
+

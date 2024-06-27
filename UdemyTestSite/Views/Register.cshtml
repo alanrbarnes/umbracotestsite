@@ -4,9 +4,26 @@
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @{
     Layout = "Main.cshtml";
+    
+    var heroOverlayColor = Model.Value<string>("heroOverlayColour");
+}
+@if (!string.IsNullOrEmpty(heroOverlayColor))
+{
+
+  <style>
+      .home-hero > .overlay {
+            background-color: #@heroOverlayColor;
+          opacity: 0.5;
+          }
+      
+  </style>
+  
 }
 
-<div class="container">
+<!-- Insert Hero Image -->
+@await Html.PartialAsync("Hero")
+
+<div class="container mt-4">
     <div class="row">
         <div class="col">
             @await Html.PartialAsync("Partials/Register", new RegisterViewModel())
