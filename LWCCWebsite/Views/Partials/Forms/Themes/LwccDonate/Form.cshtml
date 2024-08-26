@@ -1,0 +1,239 @@
+@using Umbraco.Forms.Core.Enums
+@using Umbraco.Forms.Web
+@using Umbraco.Forms.Web.Models
+@using Umbraco.Forms.Web.Services
+
+@model Umbraco.Forms.Web.Models.FormViewModel
+
+@inject IFormThemeResolver FormThemeResolver
+
+@{
+    // here we load in the needed default assets for the form
+    // this means that 3rd party themes can override these by implementing their own form.cshtml file
+    //it will simply hook into standard way forms load assets
+    if (Model.DisableDefaultStylesheet == false)
+    {
+        Html.SetFormThemeCssFile("~/App_Plugins/UmbracoForms/Assets/themes/default/style.min.css");
+    }
+
+    //add custom script
+    //add custom css
+
+}
+
+
+<div class="umbraco-forms-page" id="@Model.CurrentPage.Id">
+
+    @if (string.IsNullOrEmpty(Model.CurrentPage.Caption) == false)
+    {
+        <h4 class="umbraco-forms-caption">@Model.CurrentPage.Caption</h4>
+    }
+
+    @if (Model.ShowValidationSummary)
+    {
+        @Html.ValidationSummary(false)
+    }
+
+
+    @foreach (FieldsetViewModel fs in Model.CurrentPage.Fieldsets)
+    {
+        bool hideFieldSetWhenRendering = fs.HasCondition && fs.ConditionActionType == FieldConditionActionType.Show;
+
+        <fieldset class="umbraco-forms-fieldset@{ if (hideFieldSetWhenRendering) { <text> umbraco-forms-hidden</text>  } }" id="@fs.Id">
+
+            @if (string.IsNullOrEmpty(fs.Caption) == false)
+            {
+                <legend>@fs.Caption</legend>
+            }
+
+            <div class="row-fluid">
+
+                @foreach (var c in fs.Containers)
+                {
+                    <div class="umbraco-forms-container @("col-md-" + c.Width)">
+
+                        @foreach (FieldViewModel f in c.Fields)
+                        {
+                            bool hideFieldWhenRendering = f.HasCondition && f.ConditionActionType == FieldConditionActionType.Show;
+
+                            switch (f.FieldType?.RenderInputType ?? RenderInputType.Single)
+                            {
+                                case RenderInputType.Single:
+                                    <div class="@Html.GetFormFieldWrapperClass(f.FieldTypeName)@f.CssClass @{ if (hideFieldWhenRendering) { <text> umbraco-forms-hidden</text>  } }">
+
+                                        <label for="@f.Id" class="umbraco-forms-label@{ if (f.HideLabel) { <text> umbraco-forms-hidden</text>  } }">
+                                            @{
+                                                RenderCaption(f);
+                                            }
+                                        </label>
+
+                                        @{
+                                            await RenderField(f);
+                                        }
+
+                                    </div>
+                                    break;
+
+                                case RenderInputType.Multiple:
+                                    <fieldset class="@Html.GetFormFieldWrapperClass(f.FieldTypeName)@f.CssClass @{ if (hideFieldWhenRendering) { <text> umbraco-forms-hidden</text>  } }">
+
+                                        <legend class="umbraco-forms-legend@{ if (f.HideLabel) { <text> umbraco-forms-hidden</text>  } }">
+                                            @{
+                                                RenderCaption(f);
+                                            }
+                                        </legend>
+
+                                        @{
+                                            await RenderField(f);
+                                        }
+
+                                    </fieldset>
+                                    break;
+
+                                case RenderInputType.Custom:
+                                    @await Html.PartialAsync(FormThemeResolver.GetFieldView(Model, f), f)
+                                    break;
+                            }
+                        }
+
+                    </div>
+                }
+            </div>
+
+        </fieldset>
+    }
+
+    <div class="umbraco-forms-hidden" aria-hidden="true">
+        <input type="text" name="@Model.FormId.ToString().Replace("-", "")" />
+    </div>
+
+    <div class="umbraco-forms-navigation row-fluid">
+
+        <div class="col-md-12">
+            @if (Model.IsMultiPage)
+            {
+                if (!Model.IsFirstPage)
+                {
+                    <input class="btn prev cancel"
+                           type="submit"
+                           value="@Model.PreviousCaption"
+                           name="__prev"
+                           formnovalidate
+                           data-form-navigate="prev"
+                           data-umb="prev-forms-form"/>
+                }
+
+                if (!Model.IsLastPage)
+                {
+                    <input type="submit"
+                           class="btn next"
+                           value="@Model.NextCaption"
+                           name="__next"
+                           data-form-navigate="next"
+                           data-umb="next-forms-form"/>
+                }
+
+                if (Model.IsLastPage)
+                {
+                    <input type="submit"
+                           class="btn primary"
+                           value="@Model.SubmitCaption"
+                           name="__next"
+                           data-form-navigate="next"
+                           data-umb="submit-forms-form"/>
+                }
+            }
+            else
+            {
+                <input type="submit"
+                       class="btn primary"
+                       value="@Model.SubmitCaption"
+                       name="__next"
+                       data-form-navigate="next"
+                       data-umb="submit-forms-form" />
+            }
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("Forms/Themes/default/ScrollToFormScript")
+
+@functions
+{
+    void RenderCaption(FieldViewModel field)
+    {
+        <text>@field.Caption</text>
+        if (field.ShowIndicator)
+        {
+            <span class="umbraco-forms-indicator">@Model.Indicator</span>
+        }        
+    }
+
+    async Task RenderField(FieldViewModel field)
+    {
+        if (!string.IsNullOrEmpty(field.ToolTip))
+        {
+            <span id="@(field.Id)_description" class="umbraco-forms-tooltip help-block">@field.ToolTip</span>
+        }
+
+        <div class="umbraco-forms-field-wrapper">
+
+            @await Html.PartialAsync(FormThemeResolver.GetFieldView(Model, field), field)
+
+            @if (Model.ShowFieldValidaton)
+            {
+                @Html.ValidationMessage(field.Name, new { role = "alert" })
+            }
+
+        </div>
+    }
+}
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Query all the fieldsets in the form
+        var fieldsets = document.querySelectorAll('fieldset');
+
+        // Loop through each fieldset to find the one with the <legend> containing "Billing Information"
+        fieldsets.forEach(function (fieldset) {
+            var legend = fieldset.querySelector('legend');
+
+            // Check if the legend text is "Billing Information"
+            if (legend && legend.textContent.trim() === "Billing Information") {
+                console.log('Billing Information Fieldset found:', fieldset);
+                // Perform actions on the fieldset here
+            }
+        });
+    });
+
+    /*
+    document.addEventListener('DOMContentLoaded', function () {
+        // IDs or class selectors of fields to sum (replace these with actual IDs from the Umbraco form)
+        var field1 = document.querySelector('input[name="field1"]'); // Adjust field1's selector
+        var field2 = document.querySelector('input[name="field2"]'); // Adjust field2's selector
+        var totalField = document.querySelector('input[name="totalField"]'); // Adjust for the field where total will be displayed
+
+        // Function to update the total field
+        function updateTotal() {
+            var sum = 0;
+
+            // Parse values from the input fields
+            var value1 = parseFloat(field1.value) || 0;
+            var value2 = parseFloat(field2.value) || 0;
+
+            // Add values together
+            sum = value1 + value2;
+
+            // Set the total field's value (and make it non-editable if necessary)
+            totalField.value = sum.toFixed(2);
+        }
+
+        // Add event listeners to trigger the update when the input fields change
+        field1.addEventListener('input', updateTotal);
+        field2.addEventListener('input', updateTotal);
+
+        // Initially update total on page load
+        updateTotal();
+    });*/
+</script>

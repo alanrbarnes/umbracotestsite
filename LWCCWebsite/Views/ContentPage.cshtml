@@ -1,0 +1,100 @@
+﻿@using LWCCWebsite.Core.UmbracoModels;
+@using LWCCWebsite.ViewModels;
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ContentPage>
+@using ContentModels = LWCCWebsite.Core.UmbracoModels;
+@{
+    Layout = "Main.cshtml";
+    
+    var contactForm = Model.Value<bool>("conactFormSwitch");
+    //var contactForm = new IPublishedElement();
+
+    // var grid = Model.Value<BlockGridModel>("contentGrid");
+    // foreach (var item in grid)
+    // {
+    //     var h = item.Content.ContentType.Alias;
+    //     if (String.Equals(h, "colLayout")) {
+    //         var contactForm1 = item.Content.Value<bool>("conactFormSwitch"); 
+    //     }
+    // }  //
+
+    //var value = contactForm.Value<bool>("contactFormSwitch");
+    var heroOverlayColor = Model.Value<string>("heroOverlayColour");
+}
+
+@if (!string.IsNullOrEmpty(heroOverlayColor))
+{
+
+  <style>
+      .content-hero > .overlay,
+        .mobile-content-hero > .overlay,
+        .hero-background > .overlay {
+            background-color: #@heroOverlayColor;
+          opacity: 0.5;
+      }
+      
+  </style>
+  
+}
+
+@await Html.PartialAsync("Hero")
+
+<!-- Insert Hero Image -->
+@* <div class="d-block d-lg-none">
+    @await Html.PartialAsync("MobileHero")
+</div>
+<div class="d-none d-lg-block">
+    @await Html.PartialAsync("Hero")
+</div> *@
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col" >
+            <div style ="padding: 1em;">
+                <h1>@Model.Name</h1>
+                @if (Model.HasValue("pageContent"))
+                {
+                    @Model.Value("pageContent")
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @await Html.GetBlockGridHtmlAsync(Model, "contentGrid")
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="mb-4">
+    @await Html.PartialAsync("Call To Action")
+</div>
+
+
+@if (contactForm)
+{
+    
+  <div class="container">
+        <hr class="divider" style="margin-bottom: 2em;" />
+        <div class="row">
+            <div class="col">
+                <h6 class="fw-semibold" style="text-align: center;color: #5b42f3;">Connect with us</h6>
+                <h2 style="text-align:center;"><span style="position:relative;padding-bottom:5px;">Latest Updates from Living Word<span style="position:absolute;bottom:0;left:0;height:2px;width:100%;background:linear-gradient(to right, turquoise, greenyellow);"></span></span></h2>
+                <p style="margin-top: 1em; margin-bottom: 1em;">We'd love to hear from you! Whether you have questions, need prayer, or want to learn more about Living Word Church, we're here to help. Please fill out the following form and we will contact you.</p>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col">
+          @await Html.PartialAsync("Partials/ContactForm", new ContactFormViewModel())
+        </div>
+    </div>
+  </div>
+}
+
+
+
+

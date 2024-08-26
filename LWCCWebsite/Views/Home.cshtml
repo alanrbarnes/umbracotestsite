@@ -1,0 +1,57 @@
+﻿@using LWCCWebsite.Core.UmbracoModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Home>
+@using ContentModels = LWCCWebsite.Core.UmbracoModels;
+@{
+	Layout = "Main.cshtml";
+}
+
+<div class="homepage">
+
+<!-- Right Drawer Slideout -->
+@await Html.PartialAsync("RightDrawerSlideout")
+
+<!-- Insert Hero Image -->
+<div class="d-block d-lg-none">
+    @await Html.PartialAsync("MobileCarousel")
+</div>
+<div class="d-none d-lg-block">
+    @await Html.PartialAsync("HomeCarousel")
+</div>
+
+
+<!-- Call to Action --> 
+@await Html.PartialAsync("Call To Action")
+
+<!-- Welcome Section -->
+@await Html.PartialAsync("TextPictureRightImageBackground")
+
+<!-- Mission Section -->
+@await Html.PartialAsync("BlueFullWidthBlock")
+
+<!-- Announcements Section -->
+@await Html.PartialAsync("Announcements")
+
+<!-- Connect Section -->
+@await Html.PartialAsync("Contact")
+
+<!-- Events Section -->
+@await Html.PartialAsync("Events")
+
+<!-- Jobs Section -->
+@await Html.PartialAsync("Jobs")
+
+
+
+<!-- Latest News Cards --> 
+<div class="container">
+    <div class="row">
+        <div class="col">
+            @await Html.PartialAsync("Latest News")
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+

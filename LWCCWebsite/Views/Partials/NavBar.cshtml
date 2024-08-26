@@ -1,0 +1,69 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Security;
+@inject Umbraco.Cms.Core.Services.IMemberService memberService
+@inject IMemberManager _memberManager;
+
+@{
+    var homePage = Model.AncestorOrSelf<Home>();
+    //var membershipHelper = new Umbraco.Web.Security.MembershipHelper(Umbraco);
+    //var isMemberLoggedIn = membershipHelper.IsLoggedIn();
+    var isMemberLoggedIn = _memberManager.IsLoggedIn();
+    
+    var mediaItem = Umbraco.Media(1207); // Replace 1234 with the ID of your media item
+    var imageUrl = mediaItem?.Url();
+    
+}
+
+<div id="navigation">
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container">
+      
+      <a class="navbar-brand" href="/">
+          <img src='@imageUrl' width="auto" height="40" class="d-inline-block align-top" alt="" />
+      </a>
+    <!--<a class="navbar-brand" href="/">Living Word</a>-->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+
+        @foreach (var item in homePage.Children.Where(w => w.IsVisible()))
+        {
+          <li class="nav-item">
+            <a class="nav-link" href="/@item.UrlSegment">@item.Name</a>
+          </li>
+        }
+        @if(isMemberLoggedIn)
+        {
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/my-account">My Account</a>
+                    <a class="dropdown-item" href="/logout">Logout</a>
+                </div>
+            </div>
+            @* <li class="nav-item">
+                <a class="navbar-link" href="/logout">Logout</a>
+            </li> *@
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+        }
+        
+
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>

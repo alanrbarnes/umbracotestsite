@@ -1,0 +1,51 @@
+﻿@using LWCCWebsite.Core.UmbracoModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ContactUs>
+@using ContentModels = LWCCWebsite.Core.UmbracoModels;
+
+@{
+    Layout = "Main.cshtml";
+    // Assuming your document type has a form picker property called "formPicker"
+    var formPicker = Model.Value<Guid?>("contactUsForm");
+    var l = "l";
+}
+
+<!-- Main container -->
+<div class="container">
+    <div class="row section">
+        <!-- The Contact Form -->
+        <div class="contact-form">
+            <div class="form-group">
+                @Model.Value("contactForm")
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact details -->
+    <div class="col-md-6">
+        @Model.Value("bodyText")
+    </div>
+</div>
+
+@if (formPicker.HasValue)
+{
+    {
+        var formGuid = formPicker.Value;
+        <div class="container">
+            <div class="row section">
+                <div class="col-12 col-md-10 col-xl-8 mx-auto">
+                    <h2>Form</h2>
+                    @await Umbraco.RenderMacroAsync("renderUmbracoForm", new { FormGuid = Guid.Parse(formGuid.ToString()), FormTheme = "default", ExcludeScripts = "0" })
+                </div>
+            </div>
+        </div>
+        
+        //@await Component.InvokeAsync("RenderForm", new { formId = Guid.Parse(formGuid.ToString()), theme = "default", includeScripts = false })
+        
+
+    }
+}
+
+
+
+
+

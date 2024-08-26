@@ -1,0 +1,59 @@
+﻿
+
+.hero-background {
+    position: relative;
+    color: white;
+    width: 100%; /* Ensure the hero covers the full width */
+    height: 300px; /* Specify the height of the hero section */
+}
+
+.hero-text {
+    color: #fff; /* Set text color to solid white */
+    opacity: 1; /* Ensure the text is not transparent */
+    position: relative;
+    z-index: 5;
+    /* Other styling properties */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /*background-color: rgba(31, 3, 103, 0.80);*/
+    z-index: 1;
+}
+
+.inner {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-text-row {
+    align-items: end;
+    padding-bottom: 4em;
+}
+
+
+/* For tablets */
+@media (min-width: 769px) and (max-width: 992px) {
+    .hero-background {
+        height: 500px; /* Specify the height of the hero section */
+    }
+
+    .hero-text-row {
+        align-items: center;
+        padding: 0;
+    }
+}
+
+@media (min-width: 993px) {
+    .hero-background {
+        height: 500px; /* Specify the height of the hero section */
+    }
+    .hero-text-row {
+        align-items: center;
+        padding:0;
+    }
+}

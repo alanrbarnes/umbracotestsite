@@ -1,0 +1,144 @@
+﻿@using Umbraco.Cms.Web.Common
+@using LWCCWebsite.Core.UmbracoModels;
+@using Umbraco.Cms.Core;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Search>
+@using ContentModels = LWCCWebsite.Core.UmbracoModels;
+@using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
+
+@inject IPublishedContentQuery _publishedContentQuery;
+
+
+@{
+    Layout = "Main.cshtml";
+    //var heroImage = Model.Value<ImageCropperValue>("heroImage")?.Src;
+    var heroImage = Model.Value<IPublishedContent>("heroImage")?.Url() ?? "";
+    var heroOverlayColor = Model.Value<string>("heroOverlayColour");
+
+    //Logic for searchbox
+    var searchQuery = this.Context.Request.Query["query"];
+    IEnumerable<PublishedSearchResult> searchResults;
+    var resultsCount = 0;
+
+    //Do we have a search?
+    if (!string.IsNullOrEmpty(searchQuery))
+    {
+        //Ask Umbraco to search for the term and give the results
+        searchResults = _publishedContentQuery.Search(searchQuery, string.Empty, "InternalIndex")
+            .Where(w => w.Content.IsDocumentType("newsArticle"));
+
+        resultsCount = searchResults != null && searchResults.Any() ? searchResults.Count() : 0;
+    }
+    else
+    {
+        searchResults = null;
+    }
+
+}
+
+@if (!string.IsNullOrEmpty(heroOverlayColor))
+{
+
+  <style>
+      .home-hero > .overlay {
+            background-color: #@heroOverlayColor;
+          opacity: 0.5;
+          }
+      
+  </style>
+  
+}
+
+<style>
+    .home-hero {
+        background: no-repeat center center;
+        background-attachment: scroll;
+        position: relative;
+        background-size: cover;
+        color: white;
+        min-height: 250px;
+        background-position: bottom right;
+    }
+
+        .home-hero > .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            /*background-color: rgba(31, 3, 103, 0.80);*/
+            z-index:;
+            1;
+        }
+
+        .home-hero > .inner {
+            position: relative;
+            z-index: 2;
+        }
+</style>
+
+
+<!-- Render the search box --> 
+<header class="jumbotron jumbotron-fluid home-hero" style="background-image: url('@heroImage')">
+    <div class="overlay"></div>
+    <div class="inner">
+        <div class="container">
+            <div class="row" style="min-height: 15em;">
+                <div class="col-lg-8 col-md-10 mx-auto my-auto">
+                    <div>
+                        <h1 class="display-4 text-white">Search</h1>
+                        <form action="@Model.Url(null, UrlMode.Absolute)" method="Get">
+                            <fieldset>
+                                <input type="text" class="search-box" placeholder="Search..." name="query" />
+                                <button class="search-button">Search</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</header>
+
+<section class="container" style="margin-top: 4em; margin-bottom: 4em;">
+    <div class="row">
+        <div class="col">
+            <h6 class="fw-semibold" style="text-align: left;color: #5b42f3;">Search</h6>
+            <h2 style="text-align:left;"><span style="position:relative;padding-bottom:5px;">Search Results:<span style="position:absolute;bottom:0;left:0;height:2px;width:100%;background:linear-gradient(to right, turquoise, greenyellow);"></span></span></h2>
+        </div>
+    </div>
+
+    <!-- Search results to go here -->
+    @if (!string.IsNullOrEmpty(searchQuery))
+    {
+        <div class="container">
+            <div class="col">
+                @if ((resultsCount == 0) || (searchResults == null))
+                {
+                    <text>
+                        No results were found for @searchQuery
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        We found @resultsCount result(s).
+                    </text>
+                    <ul>
+                        @foreach (var result in searchResults)
+                        {
+                            <li>
+                                <h2>
+                                    <a href="@result.Content.Url()">@result.Content.Name</a>
+                                </h2>
+                                <p>@result.Content</p>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    }
+</section>
+
+

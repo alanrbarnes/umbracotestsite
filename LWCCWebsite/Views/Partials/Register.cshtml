@@ -1,0 +1,104 @@
+﻿@using LWCCWebsite.Controllers
+@model LWCCWebsite.ViewModels.RegisterViewModel
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Register Form";
+}
+
+@if ((string)TempData["status"] == "OK")
+{
+    // Display a success message, wrap in <text>???
+    <div class="container">
+        <div class="row">
+            <div class="col-actions text-center p-5">
+                <i class="fa-solid fa-5x fa-thumbs-up"></i>
+                <h2>Thanks for your registration, please check your emails for the email verification link.</h2>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Display specific model errors -->
+    @if (ViewData.ModelState.ContainsKey("Email") && ViewData.ModelState["Email"].Errors.Any())
+    {
+        <div class="alert alert-danger mt-2">
+            @foreach (var error in ViewData.ModelState["Email"].Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+    <!-- Display specific model errors -->
+    @if (ViewData.ModelState.ContainsKey("Error") && ViewData.ModelState["Error"].Errors.Any())
+    {
+        <div class="alert alert-danger mt-2">
+            @foreach (var error in ViewData.ModelState["Error"].Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Register Form</h1>
+                @using (Html.BeginUmbracoForm<RegisterController>(nameof(RegisterController.HandleRegister)))
+                {
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <!-- First Name -->
+                    <div class="form-group mb-3">
+                        <label asp-for="FirstName" class="mb-1" style="font-size:.95em;">First name *</label>
+                        <input asp-for="FirstName" class="form-control mb-1" id="CFInputName" aria-describedby="first name register" placeholder="Enter first name" />
+                        <span class="field-validation-valid text-danger" asp-validation-for="FirstName"></span>
+                    </div>
+                    
+                    <!-- Last Name -->
+                    <div class="form-group mb-3">
+                        <label asp-for="LastName" class="mb-1" style="font-size:.95em;">Last name *</label>
+                        <input asp-for="LastName" class="form-control mb-1" id="CFInputName" aria-describedby="last name register" placeholder="Enter last name" />
+                        <span class="field-validation-valid text-danger" asp-validation-for="LastName"></span>
+                    </div>
+                    
+                    <!-- User Name -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Username" class="mb-1" style="font-size:.95em;">User name *</label>
+                        <input asp-for="Username" class="form-control mb-1" id="CFInputName" aria-describedby="username register" placeholder="Enter User name" />
+                        <span class="field-validation-valid text-danger" asp-validation-for="Username"></span>
+                    </div>
+                    
+                    <!-- Email -->
+                    <div class="form-group mb-3">
+                        <label asp-for="EmailAddress" class="mb-1" style="font-size:.95em;">Your email *</label>
+                        <input asp-for="EmailAddress" class="form-control mb-1" id="CFInputEmail" aria-describedby="email register" placeholder="Enter email" />
+                        <span class="field-validation-valid text-danger" asp-validation-for="EmailAddress"></span>
+                    </div>
+                    
+                    <!-- Password -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Password" class="mb-1" style="font-size:.95em;">Password</label>
+                        <input asp-for="Password" class="form-control mb-1" id="CFInputSubject" aria-describedby="Password" placeholder="Enter Password" />
+                        <span class="field-validation-valid text-danger" asp-validation-for="Password"></span>
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div class="form-group mb-3">
+                        <label asp-for="ConfirmPassword" class="mb-1" style="font-size:.95em;">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" class="form-control mb-1" id="CFInputComments" aria-describedby="Confirm Password" placeholder="Confirm Password" />
+                        <span class="field-validation-valid text-danger" asp-validation-for="ConfirmPassword"></span>
+                    </div>
+                    
+                    <!-- Submit the form -->
+                    <div class="form-group">
+                        <button class="btn btn-outline-primary" type="submit" value="Register" name="register-button">Register</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+

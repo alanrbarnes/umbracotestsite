@@ -1,0 +1,76 @@
+﻿@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Web.Common.Views;
+@using Umbraco.Cms.Core.PropertyEditors;
+@using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
+@using Umbraco.Cms.Core.Services;
+@using Umbraco.Cms.Core.Media;
+@using Umbraco.Cms.Core;
+
+
+@using Umbraco.Extensions
+
+
+@inject IContentService ContentService
+@inject IPublishedContentQuery PublishedContentQuery
+@inject IImageUrlGenerator ImageUrlGenerator
+
+
+<!-- Latest News Articles -->
+@{
+    /**/
+    // ContentService.GetById(Guid)s
+    // PublishedContentQuery.content(Guid)
+    var latestNews = PublishedContentQuery.Content(Guid.Parse("9fa995c8-494b-45ff-9f47-3a675b732a2a"))
+    .ChildrenOfType("newsArticle")
+    .Where(x => x.IsVisible())
+    .OrderByDescending((IPublishedContent x) => x.CreateDate)
+    .Take(3);
+
+}
+
+
+<!-- Latest News cards -->
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h6 class="fw-semibold" style="text-align: center;color: #5b42f3;">News</h6>
+            <h2 style="text-align:center;"><span style="position:relative;padding-bottom:5px;"> Latest News<span style="position:absolute;bottom:0;left:0;height:2px;width:100%;background:linear-gradient(to right, turquoise, greenyellow);"></span></span></h2>
+        </div>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 my-4">
+        
+                @foreach (var item in latestNews)
+                {
+            
+                    var imgCropper = item.Value<ImageCropperValue>("articleImage");
+                    var thumbUrl = imgCropper.GetCropUrl("Thumb", ImageUrlGenerator);  //imgCropper.Src + imgCropper.GetCropUrl("Thumb", ImageUrlGenerator);
+            
+                    <div class="col mx-auto">
+                    <div class="card mx-1 my-2">
+                        <img class="card-img-top" src="@thumbUrl" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Name</h5>
+                            <p class="card-text">@item.Value("leadIn")</p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <div><a href="@item.Url(null, UrlMode.Absolute)" class="btn btn-primary">Read more</a></div>
+                            <div class="social-icons">
+                                <a class="me-2" style="width:1.5em;" href="https://twitter.com/intent/tweet?text=@item.Value("leadIn")&amp;url=@item.Url(null, UrlMode.Absolute)">
+                                <i class="fa-brands fa-square-x-twitter" style="font-size: 1.5em;"></i>
+                                </a>
+                                <a class="me-2" style="width:1.5em;" href="https://facebook.com/sharer.php?u=@item.Url(null, UrlMode.Absolute)">
+                                <i class="fa-brands fa-square-facebook" style="font-size: 1.5em;"></i>
+                                </a>
+                                <a class="me-2" style="width:1.5em;" href="https://linkedin.com/shareArticle?mini=true&amp;url=@item.Url(null, UrlMode.Absolute)">
+                                <i class="fa-brands fa-linkedin" style="font-size: 1.5em;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                }
+
+        
+    </div>
+</div>

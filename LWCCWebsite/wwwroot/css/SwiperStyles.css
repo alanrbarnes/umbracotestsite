@@ -1,0 +1,110 @@
+﻿
+/* swiper css */
+
+/* Ensure buttons are visible */
+
+.news-swiper-button-next, .news-swiper-button-prev, .event-swiper-button-next, .event-swiper-button-prev, .gallery-swiper-button-next, .gallery-swiper-button-prev {
+    background-color: #5b42f3;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    z-index: 10;
+    opacity: 0.8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.news-swiper-button-next, .event-swiper-button-next, .gallery-swiper-button-next {
+    right: 10px;
+}
+
+.news-swiper-button-prev, .event-swiper-button-prev, .gallery-swiper-button-prev {
+    left: 10px;
+}
+
+/* Corrected and enhanced CSS for swiper button chevrons */
+
+.news-swiper-button-next::before, .swiper-rtl .news-swiper-button-prev::after, .event-swiper-button-next::before, .swiper-rtl .event-swiper-button-prev::after, .gallery-swiper-button-next::before, .swiper-rtl .gallery-swiper-button-prev::after {
+    content: '\203A';
+    color: #fff;
+    font-size: 30px;
+    margin-top: -5px;
+}
+
+.news-swiper-button-prev::before, .swiper-rtl .news-swiper-button-next::after, .event-swiper-button-prev::before, .swiper-rtl .event-swiper-button-next::after, .gallery-swiper-button-prev::before, .swiper-rtl .gallery-swiper-button-next::after {
+    content: '\2039';
+    color: #fff;
+    font-size: 30px;
+    margin-top: -5px;
+}
+
+/* Centering pagination */
+
+.news-swiper-pagination, .event-swiper-pagination, .gallery-swiper-pagination {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    /*bottom: 10px;*/
+    z-index: 100;
+    bottom: -40px;
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.swiper-slide .event-card {
+    width: 100%;
+    height: calc(100% - 60px);
+    object-fit: cover;
+}
+
+.swiper-slide .news-card {
+    width: 100%;
+    height: calc(100% - 60px);
+    object-fit: cover;
+}
+
+/* Overall height of swiper slider */
+
+/* Adjust the height of the swiper container to create space for controls */
+
+.gallery-swiper {
+    width: 100%;
+    height: 300px;
+    position: relative;
+}
+
+/* Adjust the height of the swiper container to create space for controls */
+
+.event-swiper {
+    width: 100%;
+    height: calc(100% + 60px);
+    position: relative;
+}
+
+/* Adjust the height of the swiper container to create space for controls */
+
+.news-swiper {
+    width: 100%;
+    height: calc(100% + 60px);
+    position: relative;
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

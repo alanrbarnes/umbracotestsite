@@ -1,0 +1,20 @@
+﻿@using LWCCWebsite.Core.UmbracoModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Logout>
+@using ContentModels = LWCCWebsite.Core.UmbracoModels;
+@using Umbraco.Cms.Core.Security;
+@using Umbraco.Cms.Web.Common.Security;
+@inject IMemberSignInManager _memberSignInManager;
+@{
+    Layout = null;
+
+    // Sign out the user
+    if (User.Identity.IsAuthenticated)
+    {
+        // The sign-out method should be called in an async way.
+        var signOutTask = _memberSignInManager.SignOutAsync();
+        signOutTask.Wait();
+        
+        // Redirect to the home page or another page
+        Context.Response.Redirect("/");
+    }
+}

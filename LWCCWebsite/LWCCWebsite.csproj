@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="wwwroot\images\pexels-charles-parker-5847452.jpg" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
+    <!-- <PackageReference Include="DartSassHost" Version="1.0.13" /> -->
+    <!-- <PackageReference Include="LibSassHost" Version="1.4.0" /> -->
+    <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Umbraco.Cms" Version="13.3.0" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="13.3.0" />
+    <PackageReference Include="Umbraco.Forms" Version="13.1.2" />
+    <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="72.1.0.3" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Partials\Forms\Themes\LwccDonate\" />
+    <Folder Include="Views\Shared\Components\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\media\**" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="umbraco\models\**" />
+    <Content Remove="umbraco\models\**" />
+    <EmbeddedResource Remove="umbraco\models\**" />
+    <None Remove="umbraco\models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LWCCWebsite.Core\LWCCWebsite.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- Razor files are needed for the backoffice to work correctly -->
+    <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Remove RazorCompileOnBuild and RazorCompileOnPublish when not using ModelsMode InMemoryAuto -->
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <ExcludeFilesFromDeployment>appsettings.json;web.config</ExcludeFilesFromDeployment>
+  </PropertyGroup>
+
+</Project>

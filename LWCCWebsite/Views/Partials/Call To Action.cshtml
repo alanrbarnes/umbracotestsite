@@ -1,0 +1,57 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Models
+
+<style>
+    .blue-border-top-bottom {
+        position: relative;
+        background-color: #001a31;
+        /*border-top: 2px solid #001a31;*/ /* Top border */
+        border-bottom: 4px solid #001a31; /* Bottom border */
+        padding: 2em;
+    }
+
+    .homepage .call-to-action {
+        color: #fff;
+        background-color: #001a31;
+    }
+
+    /* Custom class for the row */
+    .homepage .gradient-extend {
+        position: relative;
+        background-color: #001a31; /* Solid background color */
+        padding: .5em;
+        z-index:5;
+    }
+
+        /* Creating the gradient extension */
+        .homepage .gradient-extend::before {
+            content: "";
+            position: absolute;
+            top: -100px; /* Adjust this value based on how much you want to extend upwards */
+            left: 0;
+            right: 0;
+            height: 100px; /* This should match the negative top value */
+            background: linear-gradient(to top, #001a31, transparent);
+            z-index: -1;
+        }
+
+</style>
+
+<section class="call-to-action gradient-extend" style="">
+    <div class="container">
+        <div class="row" >
+            <div class="col text-center pb-5">
+                <h1 class="display-4">@Model.Value("callToActionTitle")</h1>
+                <p class="lead">@Model.Value("callToActionText")</p>
+                <!-- Buttom or Link for CTA -->
+                @{
+                    var link = Model.Value<Link>("callToActionLink");
+                    if (link != null)
+                    {
+                        <a href="@link.Url" target="@link.Target" class="btn btn-outline-secondary">@link.Name</a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</section>
